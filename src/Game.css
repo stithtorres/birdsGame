@@ -2,7 +2,7 @@
   text-align: center;
 }
 .App h1{
-  padding-top: 40px;
+  padding-top: 30px;
 }
 .panel{
   display: table;
@@ -33,18 +33,18 @@
   cursor:auto;
   opacity: 1;
 }
-.card.bird1{background-image: url(imgs/cards/1.small.jpg);}
-.card.bird2{background-image: url(imgs/cards/2.small.jpg);}
-.card.bird3{background-image: url(imgs/cards/3.small.jpg);}
-.card.bird4{background-image: url(imgs/cards/4.small.jpg);}
-.card.bird5{background-image: url(imgs/cards/5.small.jpg);}
-.card.bird6{background-image: url(imgs/cards/6.small.jpg);}
-.card.bird7{background-image: url(imgs/cards/7.small.jpg);}
-.card.bird8{background-image: url(imgs/cards/8.small.jpg);}
-.card.bird9{background-image: url(imgs/cards/9.small.jpg);}
-.card.bird10{background-image: url(imgs/cards/10.small.jpg);}
-.card.bird11{background-image: url(imgs/cards/11.small.jpg);}
-.card.bird12{background-image: url(imgs/cards/12.small.jpg);}
+.card.bird1,.info button.bird1{background-image: url(imgs/cards/1.small.jpg);}
+.card.bird2,.info button.bird2{background-image: url(imgs/cards/2.small.jpg);}
+.card.bird3,.info button.bird3{background-image: url(imgs/cards/3.small.jpg);}
+.card.bird4,.info button.bird4{background-image: url(imgs/cards/4.small.jpg);}
+.card.bird5,.info button.bird5{background-image: url(imgs/cards/5.small.jpg);}
+.card.bird6,.info button.bird6{background-image: url(imgs/cards/6.small.jpg);}
+.card.bird7,.info button.bird7{background-image: url(imgs/cards/7.small.jpg);}
+.card.bird8,.info button.bird8{background-image: url(imgs/cards/8.small.jpg);}
+.card.bird9,.info button.bird9{background-image: url(imgs/cards/9.small.jpg);}
+.card.bird10,.info button.bird10{background-image: url(imgs/cards/10.small.jpg);}
+.card.bird11,.info button.bird11{background-image: url(imgs/cards/11.small.jpg);}
+.card.bird12,.info button.bird12{background-image: url(imgs/cards/12.small.jpg);}
 
 .card .number{
   position: absolute;
@@ -55,7 +55,6 @@
 .card:hover{
   opacity: 1;
 }
-
 .statusbar{
   position: absolute;
     top: 0px;
@@ -66,6 +65,7 @@
     text-align: right;
     background-color: #545454;
     color: white;
+    min-height: 21px;
 }
 .statusbar .left{
   float: left;
@@ -75,6 +75,39 @@
 }
 .row{
   display: table;
+}
+
+.info{
+  position: absolute;
+    right: 0px;
+    top: 50px;
+    background-color: #545454;
+    border-top-left-radius:8px;
+    border-bottom-left-radius: 8px;
+}
+
+.info .title{
+  color: white;
+  font-size: 12px;
+}
+
+.info button{
+  background-color: transparent;
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+    margin: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.4s;
+    display: block;
+}
+
+.info button:hover{
+    border: solid 3px rgba(255, 255, 255, 1);
 }
 
 @keyframes App-logo-spin {
