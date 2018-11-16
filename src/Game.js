@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { infoBirds } from './data.json';
 import './Game.css';
 
 class Card extends Component{
@@ -210,6 +211,17 @@ class Game extends Component{
           {this.state.info[10] ? <button className="bird10"></button> : null }
           {this.state.info[11] ? <button className="bird11"></button> : null }
           {this.state.info[12] ? <button className="bird12"></button> : null }
+        </div>
+        <div className="infoBird">
+          <span className="close">X</span>
+          <div className="img bird2"></div>
+          <div className="name">Koltrast</div>
+          <div className="cientific"><i>Turdus merula</i></div>
+          <div className="description">
+            <p>The common <b>blackbird</b> (Turdus merula) is a species of true thrush. It is also called Eurasian blackbird (especially in North America, to distinguish it from the unrelated New World blackbirds), or simply blackbird where this does not lead to confusion with a similar-looking local species. It breeds in Europe, Asia, and North Africa, and has been introduced to Australia and New Zealand. It has a number of subspecies across its large range; a few of the Asian subspecies are sometimes considered to be full species. Depending on latitude, the common blackbird may be resident, partially migratory, or fully migratory.</p>
+            <p>The male of the nominate subspecies, which is found throughout most of Europe, is all black except for a yellow eye-ring and bill and has a rich, melodious song; the adult female and juvenile have mainly dark brown plumage. This species breeds in woods and gardens, building a neat, mud-lined, cup-shaped nest. It is omnivorous, eating a wide range of insects, earthworms, berries, and fruits.</p>
+            <p>Both sexes are territorial on the breeding grounds, with distinctive threat displays, but are more gregarious during migration and in wintering areas. Pairs stay in their territory throughout the year where the climate is sufficiently temperate. This common and conspicuous species has given rise to a number of literary and cultural references, frequently related to its song.</p>
+          </div>
         </div>
       </div>
     );
