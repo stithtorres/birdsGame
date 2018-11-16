@@ -1,0 +1,76 @@
+{
+  "infoBirds": [
+    {
+      "id": "1",
+      "name": "Vermilion Flycatcher",
+      "cientific": "Pyrocephalus rubinus",
+      "description": " "
+    },
+    {
+      "id": "2",
+      "name": "Great tit",
+      "cientific": "Parus major",
+      "description": " "
+    },
+    {
+      "id": "3",
+      "name": "Curulean Warble",
+      "cientific": "Setophaga cerulea",
+      "description": " "
+    },
+    {
+      "id": "4",
+      "name": "Northern mockingbird",
+      "cientific": "Mimus polyglottos",
+      "description": " "
+    },
+    {
+      "id": "5",
+      "name": "Chaffinch",
+      "cientific": "Fringilla Coelebs",
+      "description": " "
+    },
+    {
+      "id": "6",
+      "name": "Green-headed Taneger",
+      "cientific": "Tangara seledon",
+      "description": " "
+    },
+    {
+      "id": "7",
+      "name": "Rose-bellied Bunting",
+      "cientific": "Passerina Rositae",
+      "description": " "
+    },
+    {
+      "id": "8",
+      "name": "European Goldfinch",
+      "cientific": "Carduelis carduelis",
+      "description": " "
+    },
+    {
+      "id": "9",
+      "name": "Northern Cardinal",
+      "cientific": "Cardinalis cardinalis",
+      "description": " "
+    },
+    {
+      "id": "10",
+      "name": "Black-and-Gold Tanager",
+      "cientific": "Bangsia melanochlamys",
+      "description": " "
+    },
+    {
+      "id": "11",
+      "name": "Multicoloured Tanager",
+      "cientific": "Chlorochrysa nitidissima",
+      "description": " "
+    },
+    {
+      "id": "12",
+      "name": "Koltrast",
+      "cientific": "Turdus merula",
+      "description": " "
+    }
+  ]
+}
