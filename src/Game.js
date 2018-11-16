@@ -15,6 +15,8 @@ class Game extends Component{
   constructor(props){
     super(props);
     let temp = [],pos = shuffle([1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9,10,10,10,11,11,11,12,12,12]);
+    let bestTime = null;
+    if(localStorage.getItem('bestTime')){bestTime=localStorage.getItem('bestTime').split(',');}
     for (let i = 0; i < 36; i++) {
       temp.push({id:i,value:pos[i],clicked:false,solved:false});
     }
@@ -30,7 +32,8 @@ class Game extends Component{
       seconds: 0,
       millis: 0,
       running: false,
-      start:false
+      start:false,
+      bestTime: bestTime
     };
     this._handleStartClick = this._handleStartClick.bind(this);
     this._handleStopClick = this._handleStopClick.bind(this);
@@ -81,6 +84,12 @@ class Game extends Component{
         let m = "";
         if(s === 12){
           m = "Congratulations! you have unlocked all available content!!";
+          this._handleStopClick();
+          if(this.calculateBestTime()){
+            let temp = [this.state.minutes,this.state.seconds];
+            this.setState({bestTime: temp});
+            localStorage.setItem('bestTime', temp);
+          }
         }else{
           m = "Great!, you solved "+s+" cards";
         }
@@ -91,6 +100,23 @@ class Game extends Component{
       this.setState({cards:temp});
     }
   }
+  calculateBestTime(){
+    let bt = false;
+    if(this.state.bestTime !== null){
+      if(Number(this.state.minutes) < Number(this.state.bestTime[0])){
+          bt = true;
+      }
+      if(Number(this.state.bestTime[0]) === Number(this.state.minutes) ){
+        if(Number(this.state.seconds) < Number(this.state.bestTime[1]) ){
+          bt = true;
+        }
+      }
+    }else{
+      bt = true;
+    }
+    return bt;
+  }
+
   _handleStartClick(event) {
       if (!this.state.running) {
           this.interval = setInterval(() => {
@@ -156,17 +182,20 @@ class Game extends Component{
     }
     return(
       <div className="App">
-      <h1>Now, a brain exercise!</h1>
-      <p>Find three cards with the same image bird to reveal their information.</p>
-      <div className="statusbar">
-        {this.state.start ?
-          <span className="left" ><span className="mins">{this.zeroPad(this.state.minutes)}:</span><span className="secs">{this.zeroPad(this.state.seconds)}:</span><span className="millis">0{this.state.millis}</span></span>
-        : null }
-        <span className="right">{this.state.status}</span>
-      </div>
-        <div className="panel">
-          {this.state.start ? createAllCards() : <button onClick={this._startAll}>Start!</button> }
+        <div className="statusbar">
+          {this.state.start ?
+            <span className="left" ><span className="mins">{this.zeroPad(this.state.minutes)}:</span><span className="secs">{this.zeroPad(this.state.seconds)}:</span><span className="millis">0{this.state.millis}</span></span>
+          : null }
+          <span className="right">{this.state.status}</span>
         </div>
+
+        {this.state.bestTime ? <span className="bestTime">Best time: <b>{this.zeroPad(this.state.bestTime[0])}:{this.zeroPad(this.state.bestTime[1])}</b></span>: null}
+
+        <h1>Now, a brain exercise!</h1>
+        <p>Find three cards with the same image bird to reveal their information.</p>
+
+        {this.state.start ? <div className="panel">{createAllCards()}</div> : <button className="btn-style" onClick={this._startAll}>Let's start!</button> }
+
         <div className="info">
           {this.state.solved >= 1 ? <span className="title">Rewards:</span> : null }
           {this.state.info[1] ? <button className="bird1"></button> : null }
