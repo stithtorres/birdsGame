@@ -1,6 +1,9 @@
 .App{
   text-align: center;
 }
+.App h1{
+  padding-top: 40px;
+}
 .panel{
   display: table;
   margin: auto;
@@ -23,13 +26,26 @@
   float: left;
 }
 .card.clicked{
-  background-image: none;
+  opacity: 1;
 }
 .card[solved=true],.card[solved=true]:hover,.card[solved=true]:focus{
   outline: none;
   cursor:auto;
   opacity: 1;
 }
+.card.bird1{background-image: url(imgs/cards/1.small.jpg);}
+.card.bird2{background-image: url(imgs/cards/2.small.jpg);}
+.card.bird3{background-image: url(imgs/cards/3.small.jpg);}
+.card.bird4{background-image: url(imgs/cards/4.small.jpg);}
+.card.bird5{background-image: url(imgs/cards/5.small.jpg);}
+.card.bird6{background-image: url(imgs/cards/6.small.jpg);}
+.card.bird7{background-image: url(imgs/cards/7.small.jpg);}
+.card.bird8{background-image: url(imgs/cards/8.small.jpg);}
+.card.bird9{background-image: url(imgs/cards/9.small.jpg);}
+.card.bird10{background-image: url(imgs/cards/10.small.jpg);}
+.card.bird11{background-image: url(imgs/cards/11.small.jpg);}
+.card.bird12{background-image: url(imgs/cards/12.small.jpg);}
+
 .card .number{
   position: absolute;
   top: 5px;
@@ -40,6 +56,23 @@
   opacity: 1;
 }
 
+.statusbar{
+  position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px 20px 10px;
+    display: block;
+    left: 0px;
+    text-align: right;
+    background-color: #545454;
+    color: white;
+}
+.statusbar .left{
+  float: left;
+}
+.statusbar .right{
+  float: right;
+}
 .row{
   display: table;
 }
