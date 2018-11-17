@@ -36,7 +36,7 @@ class Game extends Component{
       running: false,
       start:false,
       bestTime: bestTime,
-      finalM: true,
+      finalM: false,
     };
     this._handleStartClick = this._handleStartClick.bind(this);
     this._handleStopClick = this._handleStopClick.bind(this);
