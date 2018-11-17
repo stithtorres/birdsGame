@@ -5,8 +5,8 @@ import './Game.css';
 class Card extends Component{
   render(){
     return(
-      <button key={this.props.id} id={this.props.id} className={"card "+(this.props.clicked ? "clicked " : " ")+(this.props.clicked ? "bird"+this.props.value+" " : this.props.value)} solved={(this.props.solved ? "true" : "false")} onClick={this.props.onClick}>
-        <span className="number">{this.props.id+1}</span>
+      <button key={this.props.id} id={this.props.id} className={"card "+(this.props.clicked ? "clicked " : " ")+(this.props.clicked ? "bird"+this.props.value+" " : null)} solved={(this.props.solved ? "true" : "false")} onClick={this.props.onClick}>
+        <span className="number">{this.props.id+1} | {this.props.value}</span>
       </button>
     );
   }
@@ -23,6 +23,7 @@ class Game extends Component{
     }
     this.state = {
       cards: temp,
+      infoBullet: Array(13).fill(false),
       info: Array(13).fill(false),
       previous: null,
       beforePrev: null,
@@ -34,19 +35,51 @@ class Game extends Component{
       millis: 0,
       running: false,
       start:false,
-      bestTime: bestTime
+      bestTime: bestTime,
+      finalM: false,
     };
     this._handleStartClick = this._handleStartClick.bind(this);
     this._handleStopClick = this._handleStopClick.bind(this);
     this._handleResetClick = this._handleResetClick.bind(this);
     this._startAll = this._startAll.bind(this);
+    this.closeFm = this.closeFm.bind(this);
   }
   renderCard(id){
     return(
       <Card id={id} key={id} value={this.state.cards[id].value} clicked={this.state.cards[id].clicked ? true : false} solved={this.state.cards[id].solved} onClick={() => this.checkCards(id)}/>
     );
   }
-
+  renderInfo(id){
+    return(
+      <div>
+      <div className="infoBird">
+        <span className="close" title="Close" onClick={() => this.closeInfo(id)}>X</span>
+        <div className={"img bird"+id}></div>
+        <div className={"imgf bird"+id}></div>
+        <div className={"img2 bird"+id}></div>
+        <div className="name">{infoBirds[id-1].name}</div>
+        <div className="cientific"><i>{infoBirds[id-1].cientific}</i></div>
+        <div className="description" dangerouslySetInnerHTML={{ __html: infoBirds[id-1].description}}></div>
+      </div>
+      <div className="overlay"></div>
+      </div>
+    );
+  }
+  showInfo(id){
+    let temp = this.state.info;
+    temp[id] = true;
+    this.setState({info:temp});
+    if(this.state.solved < 12){this._handleStopClick();}
+  }
+  closeInfo(id){
+    let temp = this.state.info;
+    temp[id] = false;
+    this.setState({info:temp});
+    if(this.state.solved < 12){this._handleStartClick();}
+  }
+  closeFm(){
+    this.setState({finalM:false});
+  }
   delayHide(e){
     let temp = this.state.cards;
     let temp2 = this.state.cards.slice();
@@ -75,7 +108,8 @@ class Game extends Component{
           this.delayHide(e);
         }
       }else if((temp[e].value === temp[this.state.previous].value ) && (temp[e].value === temp[this.state.beforePrev].value ) ){
-        let tempInfo = this.state.info;
+        let tempInfo = this.state.infoBullet;
+        let finalM = false;
         tempInfo[temp[e].value] = true;
         temp[e].clicked = true;
         temp[e].solved = true;
@@ -91,10 +125,11 @@ class Game extends Component{
             this.setState({bestTime: temp});
             localStorage.setItem('bestTime', temp);
           }
+          finalM = true;
         }else{
           m = "Great!, you solved "+s+" cards";
         }
-        this.setState({beforePrev: null,previous:null,status:m,solved:s,info:tempInfo});
+        this.setState({beforePrev: null,previous:null,status:m,solved:s,infoBullet:tempInfo,finalM:finalM});
       }else{
         this.delayHide(e);
       }
@@ -162,11 +197,13 @@ class Game extends Component{
       });
   }
   _startAll() {
+   console.log(infoBirds);
    this.setState({
      start: true,
    });
    this._handleStartClick();
  }
+
   render(){
     const createAllCards = () =>{
       let cards = [], count = 0
@@ -185,51 +222,59 @@ class Game extends Component{
       <div className="App">
         <div className="statusbar">
           {this.state.start ?
-            <span className="left" ><span className="mins">{this.zeroPad(this.state.minutes)}:</span><span className="secs">{this.zeroPad(this.state.seconds)}:</span><span className="millis">0{this.state.millis}</span></span>
+            <span className="left" title="Elapsed time" ><span className="mins">{this.zeroPad(this.state.minutes)}:</span><span className="secs">{this.zeroPad(this.state.seconds)}:</span><span className="millis">0{this.state.millis}</span></span>
           : null }
           <span className="right">{this.state.status}</span>
         </div>
 
         {this.state.bestTime ? <span className="bestTime">Best time: <b>{this.zeroPad(this.state.bestTime[0])}:{this.zeroPad(this.state.bestTime[1])}</b></span>: null}
 
-        <h1>Now, a brain exercise!</h1>
+        {this.state.start ? null : <h1>Now, a brain exercise!</h1>}
         <p>Find three cards with the same image bird to reveal their information.</p>
 
         {this.state.start ? <div className="panel">{createAllCards()}</div> : <button className="btn-style" onClick={this._startAll}>Let's start!</button> }
 
         <div className="info">
           {this.state.solved >= 1 ? <span className="title">Rewards:</span> : null }
-          {this.state.info[1] ? <button className="bird1"></button> : null }
-          {this.state.info[2] ? <button className="bird2"></button> : null }
-          {this.state.info[3] ? <button className="bird3"></button> : null }
-          {this.state.info[4] ? <button className="bird4"></button> : null }
-          {this.state.info[5] ? <button className="bird5"></button> : null }
-          {this.state.info[6] ? <button className="bird6"></button> : null }
-          {this.state.info[7] ? <button className="bird7"></button> : null }
-          {this.state.info[8] ? <button className="bird8"></button> : null }
-          {this.state.info[9] ? <button className="bird9"></button> : null }
-          {this.state.info[10] ? <button className="bird10"></button> : null }
-          {this.state.info[11] ? <button className="bird11"></button> : null }
-          {this.state.info[12] ? <button className="bird12"></button> : null }
+          {this.state.infoBullet[1] ? <button className="bird1" onClick={() => this.showInfo(1)} > <span>{infoBirds[0].name}</span> </button> : null }
+          {this.state.infoBullet[2] ? <button className="bird2" onClick={() => this.showInfo(2)} > <span>{infoBirds[1].name}</span> </button> : null }
+          {this.state.infoBullet[3] ? <button className="bird3" onClick={() => this.showInfo(3)} > <span>{infoBirds[2].name}</span> </button> : null }
+          {this.state.infoBullet[4] ? <button className="bird4" onClick={() => this.showInfo(4)} > <span>{infoBirds[3].name}</span> </button> : null }
+          {this.state.infoBullet[5] ? <button className="bird5" onClick={() => this.showInfo(5)} > <span>{infoBirds[4].name}</span> </button> : null }
+          {this.state.infoBullet[6] ? <button className="bird6" onClick={() => this.showInfo(6)} > <span>{infoBirds[5].name}</span> </button> : null }
+          {this.state.infoBullet[7] ? <button className="bird7" onClick={() => this.showInfo(7)} > <span>{infoBirds[6].name}</span> </button> : null }
+          {this.state.infoBullet[8] ? <button className="bird8" onClick={() => this.showInfo(8)} > <span>{infoBirds[7].name}</span> </button> : null }
+          {this.state.infoBullet[9] ? <button className="bird9" onClick={() => this.showInfo(9)} > <span>{infoBirds[8].name}</span> </button> : null }
+          {this.state.infoBullet[10] ? <button className="bird10" onClick={() => this.showInfo(10)} > <span>{infoBirds[9].name}</span> </button> : null }
+          {this.state.infoBullet[11] ? <button className="bird11" onClick={() => this.showInfo(11)} > <span>{infoBirds[10].name}</span> </button> : null }
+          {this.state.infoBullet[12] ? <button className="bird12" onClick={() => this.showInfo(12)} > <span>{infoBirds[11].name}</span> </button> : null }
         </div>
-        <div className="infoBird">
-          <span className="close">X</span>
-          <div className="img bird2"></div>
-          <div className="name">Koltrast</div>
-          <div className="cientific"><i>Turdus merula</i></div>
-          <div className="description">
-            <p>The common <b>blackbird</b> (Turdus merula) is a species of true thrush. It is also called Eurasian blackbird (especially in North America, to distinguish it from the unrelated New World blackbirds), or simply blackbird where this does not lead to confusion with a similar-looking local species. It breeds in Europe, Asia, and North Africa, and has been introduced to Australia and New Zealand. It has a number of subspecies across its large range; a few of the Asian subspecies are sometimes considered to be full species. Depending on latitude, the common blackbird may be resident, partially migratory, or fully migratory.</p>
-            <p>The male of the nominate subspecies, which is found throughout most of Europe, is all black except for a yellow eye-ring and bill and has a rich, melodious song; the adult female and juvenile have mainly dark brown plumage. This species breeds in woods and gardens, building a neat, mud-lined, cup-shaped nest. It is omnivorous, eating a wide range of insects, earthworms, berries, and fruits.</p>
-            <p>Both sexes are territorial on the breeding grounds, with distinctive threat displays, but are more gregarious during migration and in wintering areas. Pairs stay in their territory throughout the year where the climate is sufficiently temperate. This common and conspicuous species has given rise to a number of literary and cultural references, frequently related to its song.</p>
+        {this.state.info[1] ? this.renderInfo(1) : null }
+        {this.state.info[2] ? this.renderInfo(2) : null }
+        {this.state.info[3] ? this.renderInfo(3) : null }
+        {this.state.info[4] ? this.renderInfo(4) : null }
+        {this.state.info[5] ? this.renderInfo(5) : null }
+        {this.state.info[6] ? this.renderInfo(6) : null }
+        {this.state.info[7] ? this.renderInfo(7) : null }
+        {this.state.info[8] ? this.renderInfo(8) : null }
+        {this.state.info[9] ? this.renderInfo(9) : null }
+        {this.state.info[10] ? this.renderInfo(10) : null }
+        {this.state.info[11] ? this.renderInfo(11) : null }
+        {this.state.info[12] ? this.renderInfo(12) : null }
+        {this.state.finalM ?
+          <div>
+            <div className="finalMessage">
+              <span className="close" title="Close" onClick={this.closeFm}>X</span>
+              <p>Congratulations, you finish in</p>
+              <p><b>{this.zeroPad(this.state.minutes)}</b> minutes & <b>{this.zeroPad(this.state.seconds)}</b> seconds</p>
+            </div>
+            <div className="overlay"></div>
           </div>
-        </div>
+        : null }
       </div>
     );
   }
 }
-
-
-
 
 function shuffle(array) {
   var m = array.length, t, i;
