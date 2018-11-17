@@ -36,7 +36,7 @@ class Game extends Component{
       running: false,
       start:false,
       bestTime: bestTime,
-      finalM: false,
+      finalM: true,
     };
     this._handleStartClick = this._handleStartClick.bind(this);
     this._handleStopClick = this._handleStopClick.bind(this);
@@ -197,7 +197,6 @@ class Game extends Component{
       });
   }
   _startAll() {
-   console.log(infoBirds);
    this.setState({
      start: true,
    });

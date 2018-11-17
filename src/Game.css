@@ -45,6 +45,12 @@ background-color: #3f5c93;
   cursor:auto;
   opacity: 1;
 }
+
+.card[solved=true]{
+  animation: solved 1s;
+  position: relative;
+
+}
 .card.bird1,.info button.bird1{background-image: url(imgs/cards/1.small.jpg);}
 .card.bird2,.info button.bird2{background-image: url(imgs/cards/2.small.jpg);}
 .card.bird3,.info button.bird3{background-image: url(imgs/cards/3.small.jpg);}
@@ -310,7 +316,7 @@ background-color: #3f5c93;
     bottom: 0;
     left: 0;
     right: 0;
-    background-image: url(/static/media/female.ba285a28.png);
+    background-image: url(imgs/female.png);
     background-size: 70%;
     background-position: center;
     background-repeat: no-repeat;
@@ -434,12 +440,13 @@ background-color: #3f5c93;
     bottom: 0px;
     z-index: 5;
     background-color: rgba(0, 0, 0, 0.8);
+    animation: fadeIn 4s;
   }
 
 
 
   .finalMessage{
-    background-image: url(/static/media/birds.9c905327.png);
+    background-image: url(imgs/birds.png);
     width: 300px;
     background-color: #3e3e3e;
     position: fixed;
@@ -454,6 +461,7 @@ background-color: #3f5c93;
     background-size: 80%;
     padding: 80px 0px 30px 0px;
     background-position: center top;
+    animation: fadeIn 1.5s;
   }
   .finalMessage p{
     font-size: 19px;
@@ -461,6 +469,21 @@ background-color: #3f5c93;
   }
   .finalMessage p b{
     font-size: 25px;
+  }
+
+  .finalMessage::after{
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background-image: url(/static/media/ffalling.d9f7a44c.gif);
+    top: -25%;
+    left: -25%;
+    background-size: cover;
+    pointer-events: none;
+    animation: fadeOut 10s;
+    opacity: 0;
   }
 
   @keyframes App-logo-spin {
@@ -480,6 +503,17 @@ background-color: #3f5c93;
       opacity: 1;
     }
   }
+  @keyframes fadeOut {
+    0% {
+      opacity: 0.75;
+    }
+    40% {
+      opacity: 0.75;
+    }
+    100%{
+      opacity: 0;
+    }
+  }
 
   @keyframes change-bg-colour{
     0%{
@@ -496,5 +530,38 @@ background-color: #3f5c93;
     }
     100%{
       background-color: #3f5c93;
+    }
+  }
+
+  @keyframes solved{
+    0%{
+      transform: scale(1);
+      filter: brightness(100%) saturate(100%);
+      border-radius: 0px;
+      z-index: 5;
+    }
+    25%{
+      transform: scale(1.18);
+      filter: brightness(140%) saturate(170%);
+      border-radius: 5px;
+      z-index: 5;
+    }
+    50%{
+      transform: scale(1.1);
+      filter: brightness(60%) saturate(50%);
+      border-radius: 10px;
+      z-index: 5;
+    }
+    75%{
+      transform: scale(1);
+      filter: brightness(100%) saturate(100%);
+      border-radius: 0px;
+      z-index: 5;
+    }
+    100%{
+      transform: scale(1);
+      filter: brightness(100%) saturate(100%);
+      border-radius: 0px;
+      z-index: 5;
     }
   }
