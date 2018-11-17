@@ -6,7 +6,7 @@ class Card extends Component{
   render(){
     return(
       <button key={this.props.id} id={this.props.id} className={"card "+(this.props.clicked ? "clicked " : " ")+(this.props.clicked ? "bird"+this.props.value+" " : null)} solved={(this.props.solved ? "true" : "false")} onClick={this.props.onClick}>
-        <span className="number">{this.props.id+1} | {this.props.value}</span>
+        <span className="number">{this.props.id+1}</span>
       </button>
     );
   }

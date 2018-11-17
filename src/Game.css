@@ -101,7 +101,7 @@ background-color: #3f5c93;
   background-color: #3e3e3e;
   border-top-left-radius:8px;
   border-bottom-left-radius: 8px;
-  box-shadow: -4px 0px 50px rgba(255, 255, 255, 0.27);
+  box-shadow: -4px 0px 40px rgba(255, 255, 255, 0.15);
 }
 
 .info .title{
