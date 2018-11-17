@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { infoBirds } from './data.json';
 import './Game.css';
+import './GameRes.css';
 
 class Card extends Component{
   render(){
     return(
       <button key={this.props.id} id={this.props.id} className={"card "+(this.props.clicked ? "clicked " : " ")+(this.props.clicked ? "bird"+this.props.value+" " : null)} solved={(this.props.solved ? "true" : "false")} onClick={this.props.onClick}>
-        <span className="number">{this.props.id+1}</span>
+        <span className="number">{this.props.value+1}</span>
       </button>
     );
   }
@@ -15,6 +16,7 @@ class Card extends Component{
 class Game extends Component{
   constructor(props){
     super(props);
+    // Create and array with all the props of a card, and shuffled randomly
     let temp = [],pos = shuffle([1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9,10,10,10,11,11,11,12,12,12]);
     let bestTime = null;
     if(localStorage.getItem('bestTime')){bestTime=localStorage.getItem('bestTime').split(',');}
@@ -49,7 +51,84 @@ class Game extends Component{
       <Card id={id} key={id} value={this.state.cards[id].value} clicked={this.state.cards[id].clicked ? true : false} solved={this.state.cards[id].solved} onClick={() => this.checkCards(id)}/>
     );
   }
+  delayHide(e){
+    // effect to leave for a second a mistaken revealed card
+    let temp = this.state.cards;
+    let temp2 = this.state.cards.slice();
+    temp[e].clicked = true;
+    this.setState({isGoodClick:false,cards:temp,status:"try again..."});
+    setTimeout(function(){
+      temp2[e].clicked = false;
+      if(this.state.previous !== null){temp2[this.state.previous].clicked = false;}
+      if(this.state.beforePrev !== null){temp2[this.state.beforePrev].clicked = false;}
+      this.setState({isGoodClick:true,cards:temp2,previous:null,beforePrev:null});
+    }.bind(this,temp2), 1000);
+  }
+  checkCards(e){
+    // needed conditions to eval if a group of cards was solved
+    if(this.state.cards[e].solved === false && this.state.cards[e].clicked === false && this.state.isGoodClick === true){
+      let temp = this.state.cards;
+      if(this.state.previous === null){
+        temp[e].clicked = true;
+        this.setState({previous: e});
+      }else if(this.state.beforePrev === null){
+        let prev = this.state.previous;
+        if((temp[prev].value === temp[e].value ) && prev !== e){
+          temp[e].clicked = true;
+          this.setState({beforePrev: prev,previous:e,status:"Just one more!"});
+        }else{
+          this.delayHide(e);
+        }
+        // this is the final verification
+      }else if((temp[e].value === temp[this.state.previous].value ) && (temp[e].value === temp[this.state.beforePrev].value ) ){
+        let tempInfo = this.state.infoBullet;
+        let finalM = false;
+        tempInfo[temp[e].value] = true;
+        temp[e].clicked = true;
+        temp[e].solved = true;
+        temp[this.state.previous].solved = true;
+        temp[this.state.beforePrev].solved = true;
+        let s = this.state.solved + 1;
+        let m = "";
+        if(s === 12){
+          m = "Congratulations! you have unlocked all available content!!";
+          this._handleStopClick();
+          if(this.calculateBestTime()){
+            let temp = [this.state.minutes,this.state.seconds];
+            this.setState({bestTime: temp});
+            // if theres a new local best time is save on a localStorage var
+            localStorage.setItem('bestTime', temp);
+          }
+          finalM = true;
+        }else{
+          m = "Great!, you solved "+s+" cards";
+        }
+        this.setState({beforePrev: null,previous:null,status:m,solved:s,infoBullet:tempInfo,finalM:finalM});
+      }else{
+        this.delayHide(e);
+      }
+      this.setState({cards:temp});
+    }
+  }
+  calculateBestTime(){
+    let bt = false;
+    if(this.state.bestTime !== null){
+      if(Number(this.state.minutes) < Number(this.state.bestTime[0])){
+          bt = true;
+      }
+      if(Number(this.state.bestTime[0]) === Number(this.state.minutes) ){
+        if(Number(this.state.seconds) < Number(this.state.bestTime[1]) ){
+          bt = true;
+        }
+      }
+    }else{
+      bt = true;
+    }
+    return bt;
+  }
+
   renderInfo(id){
+    //create the html content for each rewarded card, based on a external json data
     return(
       <div>
       <div className="infoBird">
@@ -80,78 +159,8 @@ class Game extends Component{
   closeFm(){
     this.setState({finalM:false});
   }
-  delayHide(e){
-    let temp = this.state.cards;
-    let temp2 = this.state.cards.slice();
-    temp[e].clicked = true;
-    this.setState({isGoodClick:false,cards:temp,status:"try again..."});
-    setTimeout(function(){
-      temp2[e].clicked = false;
-      if(this.state.previous !== null){temp2[this.state.previous].clicked = false;}
-      if(this.state.beforePrev !== null){temp2[this.state.beforePrev].clicked = false;}
-      this.setState({isGoodClick:true,cards:temp2,previous:null,beforePrev:null});
-    }.bind(this,temp2), 1000);
-  }
 
-  checkCards(e){
-    if(this.state.cards[e].solved === false && this.state.cards[e].clicked === false && this.state.isGoodClick === true){
-      let temp = this.state.cards;
-      if(this.state.previous === null){
-        temp[e].clicked = true;
-        this.setState({previous: e});
-      }else if(this.state.beforePrev === null){
-        let prev = this.state.previous;
-        if((temp[prev].value === temp[e].value ) && prev !== e){
-          temp[e].clicked = true;
-          this.setState({beforePrev: prev,previous:e,status:"Just one more!"});
-        }else{
-          this.delayHide(e);
-        }
-      }else if((temp[e].value === temp[this.state.previous].value ) && (temp[e].value === temp[this.state.beforePrev].value ) ){
-        let tempInfo = this.state.infoBullet;
-        let finalM = false;
-        tempInfo[temp[e].value] = true;
-        temp[e].clicked = true;
-        temp[e].solved = true;
-        temp[this.state.previous].solved = true;
-        temp[this.state.beforePrev].solved = true;
-        let s = this.state.solved + 1;
-        let m = "";
-        if(s === 12){
-          m = "Congratulations! you have unlocked all available content!!";
-          this._handleStopClick();
-          if(this.calculateBestTime()){
-            let temp = [this.state.minutes,this.state.seconds];
-            this.setState({bestTime: temp});
-            localStorage.setItem('bestTime', temp);
-          }
-          finalM = true;
-        }else{
-          m = "Great!, you solved "+s+" cards";
-        }
-        this.setState({beforePrev: null,previous:null,status:m,solved:s,infoBullet:tempInfo,finalM:finalM});
-      }else{
-        this.delayHide(e);
-      }
-      this.setState({cards:temp});
-    }
-  }
-  calculateBestTime(){
-    let bt = false;
-    if(this.state.bestTime !== null){
-      if(Number(this.state.minutes) < Number(this.state.bestTime[0])){
-          bt = true;
-      }
-      if(Number(this.state.bestTime[0]) === Number(this.state.minutes) ){
-        if(Number(this.state.seconds) < Number(this.state.bestTime[1]) ){
-          bt = true;
-        }
-      }
-    }else{
-      bt = true;
-    }
-    return bt;
-  }
+  //General functions to handle the chronometer
 
   _handleStartClick(event) {
       if (!this.state.running) {
@@ -187,6 +196,7 @@ class Game extends Component{
       this.update(millis, seconds, minutes);
   }
   zeroPad(value) {
+    // add extra 0 to numbers before 10
       return value < 10 ? `0${value}` : value;
   }
   update(millis, seconds, minutes) {
@@ -196,6 +206,8 @@ class Game extends Component{
           minutes: minutes
       });
   }
+
+  //Function to init the panel cards and the chronometer
   _startAll() {
    this.setState({
      start: true,
@@ -204,6 +216,7 @@ class Game extends Component{
  }
 
   render(){
+    // this const creates all the html cards based on the array general state
     const createAllCards = () =>{
       let cards = [], count = 0
       const maxRow = 6, maxCol = 6

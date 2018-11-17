@@ -477,7 +477,7 @@ background-color: #3f5c93;
     position: absolute;
     width: 150%;
     height: 150%;
-    background-image: url(/static/media/ffalling.d9f7a44c.gif);
+    background-image: url(imgs/ffalling.gif);
     top: -25%;
     left: -25%;
     background-size: cover;
@@ -485,7 +485,7 @@ background-color: #3f5c93;
     animation: fadeOut 10s;
     opacity: 0;
   }
-
+  
   @keyframes App-logo-spin {
     from {
       transform: rotate(0deg);

@@ -1,0 +1,115 @@
+
+@media (max-width: 730px){
+
+.panel{
+  width: 100vw;
+  height: 100vw;
+}
+
+.card{
+  width: calc(100vw / 6);
+  height: calc(100vw / 6);
+  margin: 0px;
+  border: none;
+  opacity: 0.85;
+}
+.card[solved=true]{
+  animation: solved 1s;
+  position: relative;
+}
+.statusbar .right{
+  display: none;
+}
+
+.bestTime{
+  right: 4px;
+  top: 0;
+  left: inherit !important;
+  padding: 5px 10px;
+  border-bottom-left-radius: 10px;
+  z-index: 1;
+}
+
+.App p{
+  font-size: 3.5vw;
+  padding: 0px 15px;
+}
+
+.info{
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  top: inherit !important;
+  max-height: 100px;
+  overflow: auto;
+  border-radius: 0px;
+  padding-top: 20px;
+}
+
+.info .title{
+  display: block;
+  margin-top: -20px;
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  background-color: #3e3e3e;
+  padding-top: 4px;
+  z-index: 1;
+  padding-bottom: 4px;
+}
+
+.info button{
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  display: inline;
+}
+
+.info button:hover{z-index: 2}
+
+.info button span{
+  display: none;
+}
+
+  .infoBird{
+    width: 100%;
+    left: 0;
+    margin-left: 0;
+    top: 0px;
+    bottom: 0;
+  }
+
+  .infoBird .close,.finalMessage .close{
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+  @media (max-width: 450px){
+    .infoBird .img:hover,.infoBird .imgf:hover,.infoBird .img2:hover{
+      width: 100vw;
+      height: 100vw;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      margin: 0px;
+      z-index: 5;
+    }
+  }
+
+  .infoBird .name{
+    font-size: 7vw;
+    line-height: 6vw;
+  }
+
+  @media (max-width: 375px){
+    .infoBird .name{
+      font-size: 11vw;
+      line-height: 8vw;
+    }
+
+  }
+  .infoBird .cientific{
+    font-size: 20px;
+  }
+}
